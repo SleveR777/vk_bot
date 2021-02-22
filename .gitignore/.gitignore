@@ -1,0 +1,525 @@
+#- * - coding: cp1251 -*-
+import vk_api, json
+import random
+from vk_api.longpoll import VkLongPoll, VkEventType
+from vk_api.utils import get_random_id
+import time
+import datetime
+from vk_api.keyboard import VkKeyboard, VkKeyboardColor
+import copy
+token = "3d917158a688b6020634297ec1986b6373dbb80f9ab1a2c40ffeef8b5abc2f26164a820f7275c35b52c8d"
+vk = vk_api.VkApi(token=token)
+longpool=VkLongPoll(vk)
+now = datetime.datetime.now()
+timeA = now.minute
+l=['Ты кто-то','Ты никто']
+o=[['т','о','л','е','р','а','н','т','н','о','с','т','ь'],["э","к","с","г","у","м","а","ц","и","я"],["л","и","б","е","р","а","л","и","з","м"],["э","к","с","п","о","н","а","т"],["п","ы","ш","н","о","с","т","ь"],["с","к","р","а","б","р","ё","з","н","о","с","т","ь"],["ш","а","л","о","в","л","и","в","о","с","т","ь"],["э","к","с","п","о","з","и","ц","и","я"],["и","н","д","у","л","ь","г","е","н","т"],["к","о","н","т","р","а","ц","е","п","т","и","в"],["ш","к","в","о","р","е","н","ь"],["э","п","и","г","р","а","ф"],["э","п","и","т","а","ф","и","я"],["б","а","р","б","е","к","ю"],["ж","у","л","ь","е","н"],["э","н","ц","е","ф","а","л","о","п","а","т","и","я"],["п","а","р","а","ш","ю","т","и","с","т"],["и","м","п","о","з","а","н","т","н","о","с","т","ь"],["и","н","д","и","ф","ф","е","р","е","н","т"],["д","е","м","у","л","ь","т","и","п","л","и","к","а","т","о","р"],["п","е","д","и","к","у","л","ё","з"],["в","ы","х","у","х","о","л","ь"],["р","о","с","с","о","м","а","х","а"],["с","у","щ","н","о","с","т","ь"],["п","о","э","т","а","п","н","о","с","т","ь"],["н","а","п","ы","щ","е","н","н","о","с","т","ь"],["в","о","з","в","ы","ш","е","н","н","о","с","т","ь"],['в', 'и', 'н', 'о', 'п', 'р', 'о', 'в', 'о', 'д'], ['р', 'и', 'г', 'е', 'л', 'ь'], ['к', 'о', 'н', 'с', 'о', 'л', 'ь'], ['р', 'а', 'с', 'т', 'о', 'ч', 'и', 'т', 'е', 'л', 'ь', 'с', 'т', 'в', 'о'], ['с', 'а', 'м', 'о', 'б', 'и', 'ч', 'е', 'в', 'а', 'н', 'и', 'е'], ['к', 'а', 'р', 'х', 'а', 'р', 'о', 'д', 'о', 'н'], ['и', 'н', 'к', 'а', 'п', 'с', 'у', 'л', 'я', 'ц', 'и', 'я'], ['ж', 'е', 'л', 'е', 'з', 'о', 'б', 'е', 'т', 'о', 'н', 'щ', 'и', 'к', 'б', 'и', 'ф', 'и', 'д', 'о', 'б', 'а', 'к', 'т', 'е', 'р', 'и', 'я'], ['п', 'а', 'р', 'а', 'л', 'л', 'е', 'л', 'о', 'г', 'р', 'а', 'м', 'м'], ['т', 'р', 'и', 'г', 'о', 'н', 'о', 'м', 'е', 'т', 'р', 'и', 'я'], ['п', 'о', 'д', 'з', 'е', 'м', 'е', 'л', 'ь', 'е'], ['э', 'л', 'е', 'к', 'т', 'р', 'и', 'ч', 'е', 'с', 'т', 'в', 'о'], ['а', 'в', 'т', 'о', 'б', 'и', 'о', 'г', 'р', 'а', 'ф', 'и', 'я'], ['о', 'т', 'в', 'е', 'т', 'с', 'т', 'в', 'е', 'н', 'н', 'о', 'с', 'т', 'ь'], ['э', 'л', 'е', 'к', 'т', 'р', 'о', 'д', 'и', 'н', 'а', 'м', 'и', 'к', 'а']]
+u = 0
+
+def mess(id, message):
+    vk.method('messages.send',{'user_id':id, 'message':message, "random_id": get_random_id()})
+
+def key(text, color):
+    return {
+                "action": {
+                    "type": "text",
+                    "payload": "{\"button\": \"" + "1" + "\"}",
+                    "label": f"{text}"
+                },
+                "color": f"{color}"
+    }
+
+def messk(id, message):
+    vk.method('messages.send',{'user_id':id, 'message':message, "random_id": get_random_id(), 'keyboard': keyboard})
+
+def prof(id, name, money,bank):
+    p = {}
+    p["name"] = name
+    p["money"] = money
+    p["bank"] = bank
+    p["messegNumb"] = 0
+    p["messegWord"] = 0
+    p["messegSymbol"] = 0
+    data[str(id)] = p
+    return "normal"
+
+def savebd():
+    with open("data.txt", "w") as file:
+        for i in data:
+            p = str(i) + " " + str(data[i]["name"]) + " " + str(data[i]["money"]) + " " + str(data[i]["bank"]) + " " + str(
+                data[i]["messegNumb"]) + " " + str(data[i]["messegWord"]) + " " + str(data[i]["messegSymbol"])
+            file.write(p + '\n')
+
+def loadbd():
+    file = open("data.txt", "r")
+    datas = file.read()
+    datas = datas.splitlines()
+    file.close()
+    data = {}
+    for i in datas:
+        i = i.split()
+        if len(i) > 6:  # проверка на полноту данных
+            data[str(i[0])] = {}
+            data[str(i[0])]["name"] = i[1]
+            data[str(i[0])]["money"] = i[2]
+            data[str(i[0])]["bank"] = i[3]
+            data[str(i[0])]["messegNumb"] = i[4]
+            data[str(i[0])]["messegWord"] = i[5]
+            data[str(i[0])]["messegSymbol"] = i[6]
+    return (data)
+data = loadbd()
+
+for event in longpool.listen():
+    if event.type==VkEventType.MESSAGE_NEW  and event.to_me and event.text:
+        msg=event.text.lower()
+        id = event.user_id
+        b1=1
+        n = 0
+        for i in data:
+            if str(id) == i:
+                n = 1
+        if n == 0:
+            prof(id, id, 10000000000, 0)
+        for i in data:
+            data[i]["name"]=str(data[i]["name"])
+        for i in data:
+            data[i]['money']=float(data[i]['money'])
+        for i in data:
+            data[i]['bank']=float(data[i]['bank'])
+        for i in data:
+            data[i]['messegNumb']=int(data[i]['messegNumb'])
+        for i in data:
+            data[i]['messegWord']=int(data[i]['messegWord'])
+        for i in data:
+            data[i]['messegSymbol']=int(data[i]['messegSymbol'])
+        data[str(id)]['messegNumb'] += 1
+        data[str(id)]['messegWord'] += len(msg.split())
+        data[str(id)]['messegSymbol'] += len(msg)
+        print(id, msg)
+        now = datetime.datetime.now()
+        timeB = now.minute
+        if timeA < timeB:
+            timeA = timeB
+            data[str(id)]["money"] += 5000000000
+
+        elif (timeA > timeB) and (timeB == 0):
+            timeA = 0
+            data[str(id)]["money"] += 5000000000
+        data[str(id)]["money"] = data[str(id)]["money"] * 100 // 1 / 100
+        savebd()
+        g=data[str(id)]["money"]
+        hh=data[str(id)]["bank"]
+#привет
+        if msg=='привет':
+            mess(id,data[str(id)]["name"]+', '+'qq')
+#помощь
+        elif msg.split()[0]=='помощь' or msg=='основное' or msg=='игры' or msg=='развлечения':
+            if msg=='помощь':
+                keyboard = {
+                    "one_time": True,
+                    "buttons": [
+                        [key('Основное', 'positive'), key('Игры', 'primary'), key('Развлечения', 'positive')]
+                    ]
+                }
+                keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+                keyboard = str(keyboard.decode('utf-8'))
+                messk(id,data[str(id)]["name"]+', &#11088; разделы:'+'\n'+'\t'+'\t'+'\t'+'\t'+'1&#8419; &#128142; Основное'+'\n'+'\t'+'\t'+'\t'+'\t'+'2&#8419; &#128640; Игры'+'\n'+'\t'+'\t'+'\t'+'\t'+'3&#8419; &#127882; Развлечения')
+            elif  len(msg.split())>1 and msg.split()[1].isdigit() and int(msg.split()[1])==1 or msg=='основное':
+                keyboard = {
+                    "one_time": True,
+                    "buttons": [
+                        [key('Профиль', 'positive'), key('Баланс', 'primary')],
+                        [key('Банк', 'primary'), key('Ник', 'positive')]
+                    ]
+                }
+                keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+                keyboard = str(keyboard.decode('utf-8'))
+                messk(id,data[str(id)]["name"]+', &#128142; мои основные команды:'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#128210; Профиль'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#128176; Баланс'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#128179; Банк [сумма]/Банк снять [сумма]'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#128394; Ник [ник]'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#129309; Передать [ID] [сумма]')
+            elif len(msg.split())>1 and msg.split()[1].isdigit() and int(msg.split()[1]) == 2 or msg=='игры':
+                keyboard = {
+                    "one_time": True,
+                    "buttons": [
+                        [key('Кубик', 'positive'), key('Виселица', 'primary')],
+                        [key('Казино', 'primary'), key('Монетка', 'positive')]
+                    ]
+                }
+                keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+                keyboard = str(keyboard.decode('utf-8'))
+                messk(id, data[str(id)]["name"] + ', &#128640; мои игры:'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#127922; Кубик [1-6]'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#128104; Виселица (вис [буква])'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#128184; Казино [сумма]'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#129413; Монетка [орёл/решка][сумма]')
+            elif len(msg.split())>1 and msg.split()[1].isdigit() and int(msg.split()[1]) == 3 or msg=='развлечения':
+                keyboard = {
+                    "one_time": True,
+                    "buttons": [
+                        [key('Привет', 'positive'), key('Кто я?', 'primary')]
+                    ]
+                }
+                keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+                keyboard = str(keyboard.decode('utf-8'))
+                messk(id, data[str(id)]["name"] + ', &#127882; мои развлекательные команды:'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#10067; Шанс [фраза]'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#129300; Выбери [фраза1] или [фраза2]...'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#10068; Кто я?'+'\n'+'\t'+'\t'+'\t'+'\t'+'&#128075; Привет')
+#кубик
+        elif msg.split()[0]=='кубик':
+            keyboard = {
+                "one_time": True,
+                "buttons": [
+                    [key('Кубик 1', 'primary'), key('Кубик 2', 'positive'), key('Кубик 3', 'primary')],
+                    [key('Кубик 4', 'positive'), key('Кубик 5', 'primary'), key('Кубик 6', 'positive')]
+                ]
+            }
+            keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+            keyboard = str(keyboard.decode('utf-8'))
+            if len(msg.split()) > 1 and msg.split()[1].isdigit():
+                if int(msg.split()[1])>6 or int(msg.split()[1])<1:
+                    messk(id, data[str(id)]["name"] + ', такого числа нет на кубике!')
+                else:
+                    kub=random.randint(1, 6)
+                    if int(msg.split()[1])==kub:
+                        messk(id, data[str(id)]["name"] + ', Вы угадали! &#128515;')
+                        kub=float(random.randint(10000000,1000000000))
+                        data[str(id)]["money"]+=kub
+                        savebd()
+                        messk(id, data[str(id)]["name"] + ', Вы угадали! &#128515;'+'\n'+'&#128184; Приз: '+str(kub)+'$'+'\n'+'&#128176; Баланс: ' + str(data[str(id)]["money"]) + '$')
+                    else:
+                        messk(id, data[str(id)]["name"] + ', неверно, это было число '+str(kub)+' &#128530;')
+            else:
+                messk(id,data[str(id)]["name"]+', введите "кубик [1-6]"')
+#передать
+        elif msg.split()[0]=='передать' or msg.split()[0]=='перевести':
+            if len(msg.split())>2 and msg.split()[1].isdigit() and msg.split()[2].isdigit():
+                if msg.split()[1]!=str(id) :
+                    if msg.split()[1] in data:
+                        if int(msg.split()[2])<=g:
+                            data[str(id)]["money"]-=float(msg.split()[2])
+                            data[msg.split()[1]]["money"]+=float(msg.split()[2])
+                            savebd()
+                            mess(id, data[str(id)]["name"] + ', Вы перевели '+msg.split()[2]+'$ на счёт '+data[msg.split()[1]]["name"]+' &#128527;')
+                            mess(msg.split()[1], data[msg.split()[1]]["name"] + ', игрок '+data[str(id)]["name"]+' перевёл вам '+msg.split()[2]+'$! &#128527;')
+                        else:
+                            mess(id, data[str(id)]["name"] + ', на вашем счёте недостаточно средств! &#128533;')
+                    else:
+                        mess(id, data[str(id)]["name"] + ', такого ID не существует! &#128533;')
+                else:
+                    mess(id, data[str(id)]["name"] + ', Нельзя переводить деньги самому себе! &#128530;')
+            else:
+                mess(id, data[str(id)]["name"] + ', введите "передать [ID] [сумма]", чтобы передать деньги игроку')
+#выбери
+        elif msg.split()[0]=='выбери' and len(msg.split())>3 and 'или' in msg.split():
+            print(msg.split()[-1])
+            if msg.split()[-1]=='или' or msg.split()[1]=='или':
+                mess(id,data[str(id)]["name"]+', допишите вариант')
+            else:
+                d=0
+                for i in msg.split():
+                    if i == 'или':
+                        d+=1
+                a1 = [[]]
+                for i in range(d):
+                    a1.append([])
+                for i in range(d+1):
+                    while b1!=len(msg.split()) and msg.split()[b1]!='или':
+                        a1[i].append(msg.split()[b1])
+                        b1+=1
+                    b1+=1
+                for i in range(len(a1)):
+                    for j in range(len(a1[i])-1):
+                        a1[i][0]+=' '+a1[i][1]
+                        del a1[i][1]
+                a1=['Думаю, что "']+(a1[random.randint(0,len(a1)-1)])+['" будет лучше']
+                mess(id,data[str(id)]["name"]+', '+a1[0]+a1[1]+a1[2])
+#баланс
+        elif msg=='баланс':
+            mess(id,data[str(id)]["name"]+', '+'на руках '+str(data[str(id)]["money"])+'$'+'\n'+'&#128179; Сумма в банке '+str(data[str(id)]["bank"])+'$')
+#профиль
+        elif msg.split()[0]=='профиль':
+            mess(id,data[str(id)]["name"]+', Ваш профиль:'+'\n'+'&#128270; ID: '+str(id)+'\n'+'&#128176; Баланс: '+str(data[str(id)]["money"])+'$'+'\n'+'&#128179; В банке: '+str(data[str(id)]["bank"])+'$'+'\n'+'&#128289; Счётчик сообщений:'+'\n'+'\t'+'\t'+'\t'+'\t'+'Номер сообщения: '+str(data[str(id)]["messegNumb"])+'\n'+'\t'+'\t'+'\t'+'\t'+'Кол-во введённых слов: '+str(data[str(id)]["messegWord"])+'\n'+'\t'+'\t'+'\t'+'\t'+'Кол-во введённых символов: '+str(data[str(id)]["messegSymbol"]))
+#монетка
+        elif msg.split()[0]=='монетка':
+            if len(msg.split())>2 and msg.split()[2].isdigit() and msg.split()[1]=='орёл' or len(msg.split())>2 and msg.split()[2].isdigit() and msg.split()[1]=='орел' or len(msg.split())>2 and msg.split()[2].isdigit() and msg.split()[1]=='решка':
+                if float(msg.split()[2])<g and float(msg.split()[2])>1:
+                    kub=random.randint(1,2)
+                    if msg.split()[1]=='орёл' or msg.split()[1]=='орел':
+                        msg=msg.split()[0]+' 1 '+msg.split()[2]
+                        print(msg)
+                    else:
+                        msg.split()[1]=msg.split()[0]+' 2 '+msg.split()[2]
+                    if kub==int(msg.split()[1]):
+                        data[str(id)]["money"]+=float(msg.split()[2])
+                        savebd()
+                        if msg.split()[1]=='1':
+                            mess(id,data[str(id)]["name"]+', &#129413; выпал орёл, Вы выиграли '+msg.split()[2]+'$! &#128515;'+'\n'+'&#128176; Баланс: '+str(data[str(id)]["money"])+'$')
+                        else:
+                            mess(id, data[str(id)]["name"] + ', &#129413; выпал орёл, Вы выиграли ' + msg.split()[2] + '$! &#128515;' + '\n' + '&#128176; Баланс: ' + str(data[str(id)]["money"]) + '$')
+                    else:
+                        data[str(id)]["money"] -= float(msg.split()[2])
+                        savebd()
+                        if msg.split()[1]=='1':
+                            mess(id,data[str(id)]["name"]+', &#129413; выпал орёл, Вы проиграли '+msg.split()[2]+'$ &#9785;'+'\n'+'&#128176; Баланс: '+str(data[str(id)]["money"])+'$')
+                        else:
+                            mess(id, data[str(id)]["name"] + ', &#129413; выпал орёл, Вы проиграли ' + msg.split()[2] + '$ &#9785;;' + '\n' + '&#128176; Баланс: ' + str(data[str(id)]["money"]) + '$')
+                else:
+                    mess(id, data[str(id)]["name"] + ', ставка должна быть минимум 1$ и не выше вашего баланса!')
+            else:
+                mess(id, data[str(id)]["name"] + ', введите "монетка [орёл/решка] [сумма]", чтобы сыграть в монетку')
+#ник
+        elif msg.split()[0]=='ник':
+            if len(msg.split())>1:
+                if msg[4]=="й" or "ц" or "у" or "к" or "е" or "н" or "г" or "ш" or "щ" or "з" or "х" or "ъ" or "ф" or "ы" or "в" or "а" or "п" or "р" or "о" or "л" or "д" or "ж" or "э" or "я" or "ч" or "с" or "м" or "и" or "т" or "ь" or "б" or "ю" or "q" or "w" or "e" or "r" or "t" or "y" or "u" or "i" or "o" or "p" or "a" or "s" or "d" or "f" or "g" or "h" or "j" or "k" or "l" or "z" or "x" or "c" or "v" or "b" or "n" or "m":
+                    msg = list(msg.split()[1])
+                    msg[0] = msg[0].upper()
+                    for i in range(len(msg) - 1):
+                        msg[0] += msg[1]
+                        del msg[1]
+                        data[str(id)]["name"]=''.join(msg)
+                else:
+                    msg=msg.split()[1]
+                    data[str(id)]["name"] =msg
+                savebd()
+                mess(id,data[str(id)]["name"]+', Вы изменили свой ник на '+'"'+data[str(id)]["name"]+'"')
+            else:
+                mess(id,data[str(id)]["name"]+', введите "ник [ник]", чтобы сменить свой ник')
+#кто я?
+        elif msg=='кто я' or msg=='кто я?':
+            mess(id,data[str(id)]["name"]+', '+random.choice(l))
+#шанс
+        elif len(msg.split())>1 and msg.split()[0] == 'шанс' or msg.split()[0] == 'шанс,' and len(msg.split())>1:
+             c = ['Шанс на это', random.randint(0, 100), '%']
+             c[1] = str(c[1])
+             mess(id,data[str(id)]["name"]+', '+c[0]+' '+c[1]+c[2])
+#банк
+        elif msg.split()[0]=='банк' and len(msg.split())>1:
+            if msg.split()[1].isdigit() or msg.split()[1]=='все':
+                h = g
+                if msg.split()[1].isdigit() and float(msg.split()[1])<1 or msg.split()[1].isdigit() and float(msg.split()[1])>g:
+                    mess(id, data[str(id)]["name"] + ', Вы не можете положить в банк больше своего баланса или меньше 1$!')
+                elif msg.split()[1]=='все':
+                    data[str(id)]["bank"]+=h
+                    data[str(id)]["money"]=0
+                    savebd()
+                    mess(id, data[str(id)]["name"] + ', ' + 'Ваш счёт пополнен на '+str(h)+'$'+'\n'+'&#128179; Сумма в банке: '+str(data[str(id)]["bank"])+'$'+'\n'+'&#128176; Баланс: '+str(data[str(id)]["money"])+'$')
+                else:
+                    data[str(id)]["bank"]+=float(msg.split()[1])
+                    data[str(id)]["money"]-=float(msg.split()[1])
+                    savebd()
+                    mess(id, data[str(id)]["name"] + ', ' + 'Ваш счёт пополнен на '+msg.split()[1]+'$'+'\n'+'&#128179; Сумма в банке: '+str(data[str(id)]["bank"])+'$'+'\n'+'&#128176; Баланс: '+str(data[str(id)]["money"])+'$')
+            elif msg.split()[1]=='снять' and msg.split()[2].isdigit() or msg.split()[1]=='снять' and msg.split()[2]=='все' or msg.split()[1]=='снять' and msg.split()[2]=='всё':
+                if msg.split()[2].isdigit() and float(msg.split()[2])<1 or msg.split()[2].isdigit() and float(msg.split()[2])>g:
+                    mess(id, data[str(id)]["name"] + ', Вы не можете снять с банка больше своего баланса или меньше 1$!')
+                elif msg.split()[2]=='все':
+                    data[str(id)]["money"]+=data[str(id)]["bank"]
+                    data[str(id)]["bank"]=0
+                    savebd()
+                    mess(id, data[str(id)]["name"] + ', ' + 'Вы сняли со своего счёта '+str(hh)+'$'+'\n'+'&#128179; Сумма в банке: '+str(data[str(id)]["bank"])+'$'+'\n'+'&#128176; Баланс: '+str(data[str(id)]["money"])+'$')
+                else:
+                    data[str(id)]["money"]+=float(msg.split()[2])
+                    data[str(id)]["bank"]-=float(msg.split()[2])
+                    savebd()
+                    mess(id, data[str(id)]["name"] + ', ' + 'Вы сняли со своего счёта '+msg.split()[2]+'$'+'\n'+'&#128179; Сумма в банке: '+str(data[str(id)]["bank"])+'$'+'\n'+'&#128176; Баланс: '+str(data[str(id)]["money"])+'$')
+            else:
+                mess(id, data[str(id)]["name"] + ', чо надо &#129300;. Если хотите узнать список команд, введите "Помощь"')
+#виселица
+        elif msg.split()[0]=='виселица' or msg.split()[0]=='вис':
+            if len(msg.split())==2:
+                if len(msg.split()[1])>1:
+                    mess(id, data[str(id)]["name"] + ', ' + 'Вы можете ввести только 1 букву!')
+                else:
+                    if u==0:
+                        p = o[random.randint(0, 42)]
+                        q = []
+                        r = ''' &#9640; &#9645;&#9645;&#9645;&#9645;&#9645;
+&#9647;
+&#9647;
+&#9647;'''
+                        s = copy.deepcopy(p)
+                        t = []
+                        for i in range(len(s)):
+                            t.append('_')
+                            u = 6
+                    c1=['', 'Длина слова: ', str(len(s)), ' букв.'+'\n']
+                    c1 += (' Cлово: ', *t)
+                    for i in range(len(c1)-1):
+                        if c1[1]=='_':
+                            c1[0] +=' '+c1[1]
+                            del c1[1]
+                        else:
+                            c1[0]+=c1[1]
+                            del c1[1]
+                    c1=''.join(c1)
+                    d1=[]
+                    if msg.split()[1] in q:
+                        d1+='Вы уже вводили букву "', msg.split()[1],'Испробованные буквы: ', *q
+                        d1[1]+='".'
+                        for i in range(len(d1) - 1):
+                            d1[0] += d1[1]+' '
+                            del d1[1]
+                        mess(id,data[str(id)]["name"]+', '+ d1[0])
+                    else:
+                        if msg.split()[1] in s:
+                            while msg.split()[1] in s:
+                                t[s.index(msg.split()[1])] = msg.split()[1]
+                                s[s.index(msg.split()[1])] = 0
+                            c1 = ['', 'Длина слова: ', str(len(s)), ' букв.' + '\n']
+                            c1 += (' Cлово: ', *t)
+                            for i in range(len(c1) - 1):
+                                if c1[1] == '_':
+                                    c1[0] += ' ' + c1[1]
+                                    del c1[1]
+                                else:
+                                    c1[0] += c1[1]
+                                    del c1[1]
+                            c1 = ''.join(c1)
+                            mess(id,data[str(id)]["name"]+', '+ 'Вы угадали букву &#128515;'+'\n'+c1+'\n'+r)
+                            q.append(msg.split()[1])
+                            if t==p:
+                                p=''.join(p)
+                                mess(id,data[str(id)]["name"]+', '+'&#11088; Вы выиграли!'+'\n'+'Слово: '+p)
+                                print(id, 'Вы выиграли!' + '\n' + 'Слово: ' + p)
+                                u=0
+                        else:            #   &#9647;     &#9640;    &#9645;     &#128104;
+                            u-=1
+                            if u == 5:
+                                r = (''' &#9640; &#9645;&#9645;&#9645;&#9645;&#9645;
+&#9647;  &#128104;
+&#9647;
+&#9647;''')
+                            elif u == 4:
+                                r = (''' &#9640; &#9645;&#9645;&#9645;&#9645;&#9645;
+&#9647;  &#9995;&#128104;
+&#9647;
+&#9647;''')
+                            elif u == 3:
+                                r = (''' &#9640; &#9645;&#9645;&#9645;&#9645;&#9645;
+&#9647;  &#9995;&#128104;&#129306;
+&#9647;
+&#9647;''')
+                            elif u == 2:
+                                r = (''' &#9640; &#9645;&#9645;&#9645;&#9645;&#9645;
+&#9647;  &#9995;&#128104;&#129306;
+&#9647;        &#128084;
+&#9647;''')
+                            elif u == 1:
+                                r = (''' &#9640; &#9645;&#9645;&#9645;&#9645;&#9645;
+&#9647;  &#9995;&#128104;&#129306;
+&#9647;        &#128084;
+&#9647;    &#128094;''')
+                            elif u == 0:
+                                r = (''' &#9640; &#9645;&#9645;&#9645;&#9645;&#9645;
+&#9647;  &#9995;&#128104;&#129306;
+&#9647;        &#128084;
+&#9647;    &#128094;   &#128094;''')
+                            mess(id,data[str(id)]["name"]+', Вы не угадали букву &#128530;'+'\n'+c1+'\n'+r)
+                            q.append(msg.split()[1])
+                            if u==0:
+                                p=''.join(p)
+                                mess(id,data[str(id)]["name"]+', &#128721; Вы проиграли!'+'\n'+'Слово: '+p)
+                                print(id,'Вы проиграли!'+'\n'+'Слово: '+p)
+            else:
+                mess(id, data[str(id)]["name"] + ', введите "виселица [буква]"/"вис [буква]" для игры в виселицу')
+#казино
+        elif msg.split()[0]=='казино':
+            keyboard = {
+                "one_time": True,
+                "buttons": [
+                    [key('Казино' + ' ' + str(int(g // 2)), 'primary'), key('Казино все', 'positive')],
+                    [key('Казино 1', 'primary'), key('Казино' + ' ' + str(int(g // 2)), 'primary')]
+                ]
+            }
+            keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+            keyboard = str(keyboard.decode('utf-8'))
+            if len(msg.split())>1 and msg.split()[1].isdigit() or len(msg.split())>1 and msg.split()[1]=='все' or len(msg.split())>1 and msg.split()[1]=='всё':
+                if msg.split()[1]=='все' or msg.split()[1]=='всё':
+                    h=g
+                else:
+                    h=float(msg.split()[1])
+                if h>g or h<1:
+                    mess(id,data[str(id)]["name"]+', '+'ставка должна быть минимум 1$ и не выше вашего баланса!')
+                else:
+                    n=random.randint(0, 100000) / 1000
+                    if n > 99.9:
+                        d = h*50
+                        for i in data:
+                            data[str(id)]["money"] += d
+                        for i in data:
+                            data[str(id)]["money"] -= h
+                        savebd()
+                        g = data[str(id)]["money"]*100//1/100
+                        c = ['Вы выиграли', d - h, '$! (х50).','&#128176; Баланс',g,'$ &#129297;']
+                        c[1] = str(c[1])
+                        c[4] = str(c[4])
+                        messk(id,data[str(id)]["name"]+', '+c[0]+' '+c[1]+c[2]+' '+c[3]+' '+c[4]+c[5])
+                        print(id, c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                    elif n > 97.9:
+                        d = h * 5
+                        data[str(id)]["money"] += d
+                        data[str(id)]["money"] -= h
+                        savebd()
+                        g = data[str(id)]["money"]*100//1/100
+                        c = ['Вы выиграли', d - h, '$! (х5).', '&#128176; Баланс', g, '$ &#129297;']
+                        c[1] = str(c[1])
+                        c[4] = str(c[4])
+                        messk(id,data[str(id)]["name"]+', '+ c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                        print(id, c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                    elif n > 67.9:
+                        d = h * 2
+                        data[str(id)]["money"] += d
+                        data[str(id)]["money"] -= h
+                        savebd()
+                        g = data[str(id)]["money"]*100//1/100
+                        c = ['Вы выиграли', d - h, '$! (х2).', '&#128176; Баланс', g, '$ &#129297;']
+                        c[1] = str(c[1])
+                        c[4] = str(c[4])
+                        messk(id,data[str(id)]["name"]+', '+ c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                        print(id, c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                    elif n > 62.9:
+                        c = ['Ваши деньги остаются при Вас (х1).','&#128176; Баланс', g, '$ &#128527;']
+                        c[2] = str(c[2])
+                        messk(id,data[str(id)]["name"]+', '+c[0]+' '+c[1]+' '+c[2]+c[3])
+                        print(id, c[0]+' '+c[1]+c[2]+' '+c[3])
+                    elif n > 49.9:
+                        d = h * 0.75
+                        data[str(id)]["money"] += d
+                        data[str(id)]["money"] -= h
+                        savebd()
+                        g = data[str(id)]["money"]*100//1/100
+                        c = ['Вы проиграли', (d - h) * -1, '$! (х0.75).', '&#128176; Баланс', g, '$ &#9785;']
+                        c[1] = str(c[1])
+                        c[4] = str(c[4])
+                        messk(id,data[str(id)]["name"]+', '+ c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                        print(id, c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                    elif n > 19.9:
+                        d = h * 0.5
+                        data[str(id)]["money"] += d
+                        data[str(id)]["money"] -= h
+                        savebd()
+                        g = data[str(id)]["money"]*100//1/100
+                        c = ['Вы проиграли', (d - h) * -1, '$! (х0.5).', '&#128176; Баланс', g, '$ &#9785;']
+                        c[1] = str(c[1])
+                        c[4] = str(c[4])
+                        messk(id,data[str(id)]["name"]+', '+ c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                        print(id, c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                    elif n > 2.9:
+                        d = h * 0.25
+                        data[str(id)]["money"] += d
+                        data[str(id)]["money"] -= h
+                        savebd()
+                        g = data[str(id)]["money"]*100//1/100
+                        c = ['Вы проиграли', (d - h) * -1, '$! (х0.25).', '&#128176; Баланс', g, '$ &#9785;']
+                        c[1] = str(c[1])
+                        c[4] = str(c[4])
+                        messk(id,data[str(id)]["name"]+', '+ c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                        print(id, c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                    else:
+                        data[str(id)]["money"] -= h
+                        savebd()
+                        g = data[str(id)]["money"]*100//1/100
+                        c = ['Вы проиграли', h, '$! (х0).', '&#128176; Баланс', g, '$ &#9785;']
+                        c[1] = str(c[1])
+                        c[4] = str(c[4])
+                        messk(id,data[str(id)]["name"]+', '+ c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+                        print(id, c[0] + ' ' + c[1] + c[2] + ' ' + c[3] + ' ' + c[4] + c[5])
+            else:
+                messk(id,data[str(id)]["name"]+', введите "казино [сумма]"')
+
+        else:
+            mess(id,data[str(id)]["name"]+', чо надо &#129300;. Если хотите узнать список команд, введите "Помощь"')
+        data[str(id)]["money"]=data[str(id)]["money"] * 100 // 1 / 100
+        savebd()
+    savebd()
